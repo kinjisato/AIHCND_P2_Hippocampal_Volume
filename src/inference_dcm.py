@@ -100,7 +100,23 @@ def create_report(inference, header, orig_vol, pred_vol):
     # pil_i = Image.fromarray(nd_img, mode="L").convert("RGBA").resize(<dimensions>)
     # Paste the PIL image into our main report image object (pimg)
     # pimg.paste(pil_i, box=(10, 280))
+    
+    
+    #slice = orig_vol[slice_nums[0], :, :]
+    #slice = orig_vol[:, :, slice_nums[0]]
+    #slice = orig_vol[0, :,:]
+    # nd_img = np.flip((slice/np.max(slice))*0xff).T.astype(np.uint8)
+    # nd_img = np.flip((slice_nums/np.max(slice_nums))*0xff).T.astype(np.uint8)
+    # pil_i = Image.fromarray(nd_img, mode="L").convert("RGBA").resize(nd_img.shape)
+    #pil_i = Image.fromarray(nd_img, mode="L").convert("RGBA").resize(500, 500)
+    #pimg.paste(pil_i, box=(10, 280))
+    
+    nd_img = np.flip((orig_vol[slice_nums[0],:,:]/np.max(orig_vol))*0xff).T.astype(np.uint8)
+    pil_i = Image.fromarray(nd_img, mode="L").convert("RGBA").resize(nd_img.shape)
+    pimg.paste(pil_i, box=(10, 280))
+    
     return pimg
+
 def save_report_as_dcm(header, report, path):
     """Writes the supplied image as a DICOM Secondary Capture file
     Arguments:
@@ -234,7 +250,6 @@ if __name__ == "__main__":
     # Create and save the report
     print("Creating and pushing report...")
     report_save_path = r"/home/workspace/out/report.dcm"
-    print("report_save_path : {}".format(report_save_path))
     # TASK: create_report is not complete. Go and complete it.
     # STAND OUT SUGGESTION: save_report_as_dcm has some suggestions if you want to expand your
     # knowledge of DICOM format
